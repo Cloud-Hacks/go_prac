@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// func to check sum
 func check_sum(s int) int {
 	for s < 1000 {
 		s += s
