@@ -7,12 +7,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/gin-gonic/gin"
 )
@@ -70,17 +69,17 @@ var tn time.Time
 
 func InitDatabase() {
 	// Capture connection properties.
-	cfg := mysql.Config{
-		User:   os.Getenv("DB_USER"),
-		Passwd: os.Getenv("DB_PASSWORD"),
-		Net:    "tcp",
-		Addr:   "127.0.0.1:3306",
-		DBName: "db1",
-	}
+	// cfg := mysql.Config{
+	// 	User:   "saan",
+	// 	Passwd: "Hiclass@12",
+	// 	Net:    "tcp",
+	// 	Addr:   "127.0.0.1:3306",
+	// 	DBName: "resource",
+	// }
 
-	// db, err := sql.Open("mysql", "root:hiclass@12@/db1")
+	db, err := sql.Open("mysql", "saan:Hiclass@12@/articleInfo")
 
-	db, err := sql.Open("mysql", cfg.FormatDSN())
+	// db, err := sql.Open("mysql", cfg.FormatDSN())
 
 	// Get a database handle.
 	if err != nil {
@@ -121,6 +120,9 @@ func Register(c *gin.Context) {
 }
 
 func ViewProfile(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	claim := &Claims{}
 	if t.Value != " " {
@@ -169,11 +171,12 @@ func ViewProfile(c *gin.Context) {
 				LastName:  user.LastName,
 			}
 		}
-		c.JSON(http.StatusOK, vp)
+		c.JSON(http.StatusOK, vp.Email)
 		// return
 	}
 	if claims.Email == " " {
-		c.JSON(http.StatusNotFound, "User needs to be logged in")
+
+		c.JSON(http.StatusOK, gin.H{"email": "User"})
 		return
 	}
 
@@ -196,6 +199,10 @@ func ViewProfile(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	// user :[]User{}
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	var user User
 
 	if err := c.BindJSON(&user); err != nil {
@@ -242,6 +249,7 @@ func Login(c *gin.Context) {
 	// 	Expires:  expirationTime,
 	// 	HttpOnly: true,
 	// }
+
 	t = &http.Cookie{
 		Name:     "token",
 		Value:    token,
@@ -260,11 +268,17 @@ func Login(c *gin.Context) {
 	// }
 
 	// fmt.Println(user.Email, user.Password, pwd)
+
+	// c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, "Successfully logged in")
 
 }
 
 func Logout(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	tn = time.Now()
 
 	if claims.Email != " " {

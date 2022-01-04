@@ -10,13 +10,20 @@ import (
 
 func main() {
 
+	// Create a new table.
 	db.InitDatabase()
 
-	// Create a new table.
+	// gin.DisableConsoleColor()
+
 	// Initialize the routes
 	r := routes.InitializeRoutes()
 
-	r.Use(cors.Default())
+	//Allow CORS
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	r.Use(cors.New(corsConfig))
+
+	// r.Use(cors.Default())
 
 	// Start the application server.
 	fmt.Println("Server is running on port 5000")

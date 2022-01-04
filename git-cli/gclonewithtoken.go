@@ -20,11 +20,12 @@ func main() {
 	Info("git clone https://github.com/Cloud-Hacks/devtro-app")
 	_, err := git.Clone(memory.NewStorage(), fs, &git.CloneOptions{
 		URL:           "https://github.com/Cloud-Hacks/devtro-app",
-		ReferenceName: plumbing.ReferenceName("refs/heads/master"),
-		Depth:         1,
-		SingleBranch:  true,
-		Auth:          &http.BasicAuth{Username: "Cloud-Hacks", Password: token},
-		Progress:      os.Stdout,
+		ReferenceName: plumbing.ReferenceName("refs/heads/master"), //HEAD points to the refs/heads/main ref.
+		//This is how Git knows that the main branch is currently checked out.
+		Depth:        1,
+		SingleBranch: true,
+		Auth:         &http.BasicAuth{Username: "Cloud-Hacks", Password: token},
+		Progress:     os.Stdout,
 	})
 
 	if err != nil {
