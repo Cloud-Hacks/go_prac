@@ -2,10 +2,10 @@ package main
 
 import "fmt"
 
-func cars(x string, y int) (string, int) {
+func cars(x string, z int) (string, int) {
 	a := x
-	b := y
-	
+	b := z
+
 	return a, b
 }
 
