@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// root structure
 type Tree struct {
 	root *tree
 }
@@ -12,7 +13,7 @@ type tree struct {
 	right *tree
 }
 
-// Tree Creation
+// root creation
 func (t *Tree) add(data string) {
 	if t.root == nil {
 		t.root = &tree{x: data}
@@ -44,7 +45,7 @@ func printPreOrder(n *tree) {
 	if n == nil {
 		return
 	} else {
-		fmt.Printf("%s ", n.x)
+		fmt.Printf("%s \n", n.x)
 		printPreOrder(n.left)
 		printPreOrder(n.right)
 	}
